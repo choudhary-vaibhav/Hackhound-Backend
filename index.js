@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 
 require('dotenv').config();
@@ -7,7 +8,9 @@ require('./configs/mongodb');
 app.use(express.json());  //middleware to parse json
 app.use(express.urlencoded());
 
-app.use('/',require('./routers/userRouter')); //dynamic routing
+app.use(require('cors')({origin: '*'}));
+
+app.use('/',require('./routers/baseRouter')); //dynamic routing
 
 const port = process.env.PORT || 1010;
 
