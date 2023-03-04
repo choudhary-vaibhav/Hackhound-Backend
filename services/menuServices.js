@@ -16,7 +16,7 @@ async function addCategory(category){
     if(exists){
         return false;
     }
-    Category.save();
+    await Category.save();
     return Category._id;
 }
 

@@ -113,8 +113,123 @@ async function getProfile(req, res){
     } 
 }
 
+async function getCart(req, res){
+    try{
+        const user_id = req.params.user_id ? req.params.user_id : null;
+
+        if(!user_id){
+            return res.status(400).json({ message: "Parameter Error!" });
+        }
+
+        const result = await userServices.getCart(user_id);
+
+        if(result === null){
+            return res.status(400).json({message:'There is some Problem! '});
+        }
+
+        res.status(200).json(result);
+    }catch(err){
+        return res.status(400).json({ error: err.message });
+    } 
+}
+
+async function clearCart(req, res){
+    try{
+        const user_id = req.params.user_id ? req.params.user_id : null;
+
+        if(!user_id){
+            return res.status(400).json({ message: "Parameter Error!" });
+        }
+
+        const result = await userServices.clearCart(user_id);
+
+        if(result === null){
+            return res.status(400).json({message:'There is some Problem! '});
+        }
+
+        res.status(200).json({message:'Cart is Now Empty! '});
+
+    }catch(err){
+        return res.status(400).json({ error: err.message });
+    } 
+}
+
+async function addItemToCart(req, res){
+    try{
+        const user_id = req.params.user_id ? req.params.user_id : null;
+        const itemObj = req.body ? req.body : null;
+
+        if(!user_id || !itemObj){
+            return res.status(400).json({ message: "Parameter Error!" });
+        }
+
+        const result = await userServices.addItemToCart(user_id, itemObj);
+
+        if(result === null){
+            return res.status(400).json({message:'There is some Problem! '});
+        }
+
+        res.status(200).json({message:'Item Added! '});
+    }catch(err){
+        return res.status(400).json({ error: err.message });
+    } 
+    
+}
+
+async function removeItemToCart(req, res){
+    try{
+        const user_id = req.params.user_id ? req.params.user_id : null;
+        const item_id = req.body.item_id ? req.body.item_id : null;
+
+        if(!user_id || !item_id){
+            return res.status(400).json({ message: "Parameter Error!" });
+        }
+
+        const result = await userServices.removeItemFromCart(user_id, item_id);
+
+        if(result === null){
+            return res.status(400).json({message:'There is some Problem! '});
+        }
+
+        res.status(200).json({message:'Item Removed! '});
+    }catch(err){
+        return res.status(400).json({ error: err.message });
+    } 
+    
+}
+
+async function updateItemCount(req, res){
+    try{
+        const user_id = req.params.user_id ? req.params.user_id : null;
+        const item_id = req.body.item_id ? req.body.item_id : null;
+        const new_quantity = req.body.new_quantity ? req.body.new_quantity : null;
+
+        if(!user_id || !item_id){
+            return res.status(400).json({ message: "Parameter Error!" });
+        }
+
+        const result = await userServices.updateItemCount(user_id, item_id, new_quantity);
+
+        if(result === null){
+            return res.status(400).json({message:'There is some Problem! '});
+        }
+
+        res.status(200).json({message:'Item Quantity Updated! '});
+    }catch(err){
+        return res.status(400).json({ error: err.message });
+    } 
+    
+}
+
+
+
 module.exports = {
     registerUser,
     login,
     getProfile,
+    getCart,
+    clearCart,
+    addItemToCart,
+    removeItemToCart,
+    updateItemCount,
 }

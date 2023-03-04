@@ -31,8 +31,99 @@ async function getUserByID(userID){
     return false;
 }
 
+async function getCart(userID){
+    const data = await User.findOne({_id: userID}).lean();
+
+    if(data){
+        let total_price = 0;
+        for(let i=0; i<data.cart.length; i++){
+            total_price += data.cart[i].price * data.cart[i].quantity;
+        }
+
+        const result = {
+            "total_price": total_price,
+            "items": data.cart,
+        }
+        return result;
+    }
+    return null;
+}
+
+async function addItemToCart(userID, itemObj){
+    const result = await User.updateOne({
+        _id: userID,
+    },
+    {
+        $push: {
+            cart: itemObj,
+        }
+    });
+
+    if(result.modifiedCount>0){
+        return true;
+    }
+    return false;
+}
+
+async function removeItemFromCart(userID, itemID){
+    const result = await User.updateOne({
+        _id: userID,
+        'cart._id': itemID,
+    },
+    {
+        $pull: {
+            'cart': {
+                _id: itemID,
+            }
+        }
+    });
+
+    if(result.modifiedCount>0){
+        return true;
+    }
+    return false;
+}
+
+async function clearCart(userID){
+    const result = await User.updateOne({
+        _id: userID,
+    },
+    {
+        $set: {
+            cart: []
+        }
+    });
+
+    if(result.modifiedCount>0){
+        return true;
+    }
+    return false;  
+}
+
+async function updateItemCount(userID, itemID, new_quantity){
+    const result = await User.updateOne({
+        _id: userID,
+        'cart._id': itemID,
+    },
+    {
+        $set: {
+            "cart.$.quantity": new_quantity,
+        }
+    });
+
+    if(result.modifiedCount>0){
+        return true;
+    }
+    return false; 
+}
+
 module.exports = {
     addUser,
     getUser,
     getUserByID,
+    getCart,
+    addItemToCart,
+    removeItemFromCart,
+    clearCart,
+    updateItemCount,
 }

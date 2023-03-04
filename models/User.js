@@ -33,7 +33,28 @@ const userSchema = new Schema({
     },
     'orders': [{
         type: SchemaTypes.ObjectId,
-    }]
+    }],
+    'cart': {
+        type: [{
+            'name': {
+                type: String,
+                trim: true,
+                required: true,
+            },
+            'price': {
+                type: Number,
+                min: 0,
+                required: true,
+            },
+            'quantity': {
+                type: Number,
+                min: 0,
+                required: true,
+            }
+        }],
+        default: [],
+        required: true,
+    },
 });
 
 const User = mongoose.model('User', userSchema);
