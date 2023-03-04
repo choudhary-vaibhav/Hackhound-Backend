@@ -50,6 +50,10 @@ const userSchema = new Schema({
                 type: Number,
                 min: 0,
                 required: true,
+            },
+            'img': {
+                type: String,
+               
             }
         }],
         default: [],
