@@ -88,7 +88,17 @@ async function login(req, res){
     }
 }
 
+async function getProfile(req, res){
+    try{
+        res.status(200).json({message:'You have the authorisation to see this page!'});
+
+    }catch(err){
+        return res.status(400).json({ error: err.message });
+    } 
+}
+
 module.exports = {
     registerUser,
     login,
+    getProfile,
 }

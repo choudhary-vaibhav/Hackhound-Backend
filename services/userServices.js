@@ -22,7 +22,17 @@ async function getUser(email){
     return null;
 }
 
+async function getUserByID(userID){
+    const data = await User.findOne({_id : userID});
+
+    if(data){
+        return true;
+    }
+    return false;
+}
+
 module.exports = {
     addUser,
     getUser,
+    getUserByID,
 }

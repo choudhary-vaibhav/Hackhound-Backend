@@ -27,6 +27,10 @@ const userSchema = new Schema({
         trim: true,
         required: true,
     },
+    'contact': {
+        type: SchemaTypes.String,
+        trim: true,
+    }
 });
 
 const User = mongoose.model('User', userSchema);
