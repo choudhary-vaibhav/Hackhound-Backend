@@ -16,7 +16,7 @@ const URL_VALUE = process.env.MONGODEV;
 
 //Connecting to DB.....
 mongoose
-  .connect(URL_VALUE.toString(), {
+  .connect(URL_VALUE, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
