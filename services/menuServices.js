@@ -13,16 +13,17 @@ async function addCategory(category){
             $options: "i",
           },
     });
-    Category.save();
     if(exists){
         return false;
     }
+    Category.save();
     return Category._id;
 }
 
 async function addItem(Category, itemObj){
     const result = await Menu.updateOne({
-        category: Category
+        category: Category,
+        "items.name": { $ne: itemObj.name }
     },
     {
         $push: {

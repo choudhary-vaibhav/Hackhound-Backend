@@ -61,7 +61,7 @@ async function login(req, res){
                 bcrypt.compare(password, doc.password, (err, result)=>{
                     if(result == true){
                         //jwt token if the password matches
-                        const token = jwt.sign({id:doc.id}, process.env.JWT_SECRET, {expiresIn: '60000'});
+                        const token = jwt.sign({id:doc.id}, process.env.JWT_SECRET, {expiresIn: '24h'});
             
                         return res.status(200).json({
                             user:{
@@ -74,9 +74,9 @@ async function login(req, res){
                         });
 
                     }else if(result == false){
-                        return res.status(404).json({message:'Invalid Password! '});
+                        return res.status(400).json({message:'Invalid Password! '});
                     }else{
-                        return res.status(500).json({message:'Internal Server Error! ', err});
+                        return res.status(400).json({message:'Internal Server Error! ', err});
                     }
                 })
             }else{
@@ -90,8 +90,24 @@ async function login(req, res){
 
 async function getProfile(req, res){
     try{
-        res.status(200).json({message:'You have the authorisation to see this page!'});
+        const email = req.body.email ? req.body.email : null;
+        if(!email){
+            return res.status(400).json({ message: "Parameter Error!" });
+        }
 
+        const result = await userServices.getUser(email);
+
+        if(!result){
+            return res.status(400).json({message:'There is some Problem! '});
+        }
+        const resultObj = {
+            name: result.name,
+            "_id": result._id,
+            email: result.email,
+            contact: result.contact
+        }
+
+        res.status(200).json(resultObj);
     }catch(err){
         return res.status(400).json({ error: err.message });
     } 

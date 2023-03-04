@@ -4,7 +4,7 @@ const userServices = require('../services/userServices');
 const verifyToken = (request, response, next) => {
     //if the request has the data of authorization header and then checking if it is JWT
     if(request.headers && request.headers.authorization && request.headers.authorization.split(' ')[0] === 'Bearer'){
-        console.log(request.headers)
+        //console.log(request.headers)
         jwt.verify(request.headers.authorization.split(' ')[1], process.env.JWT_SECRET, (err, decode) =>{
             if(err){
                 response.status(500).json({message:'Internal Server Error! ', err});
