@@ -30,7 +30,10 @@ const userSchema = new Schema({
     'contact': {
         type: SchemaTypes.String,
         trim: true,
-    }
+    },
+    'orders': [{
+        type: SchemaTypes.ObjectId,
+    }]
 });
 
 const User = mongoose.model('User', userSchema);

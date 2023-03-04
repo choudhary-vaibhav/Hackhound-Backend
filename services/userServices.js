@@ -1,7 +1,7 @@
 const { User } = require('../models/User');
 
 async function addUser(userObj, res){
-    console.log(userObj)
+    //console.log(userObj)
     const user = new User(userObj);
     const exists = await User.exists({email: userObj.email}); 
     if (exists){
