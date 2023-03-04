@@ -68,6 +68,7 @@ async function getCart(userID){
 async function addItemToCart(userID, itemObj){
     const result = await User.updateOne({
         _id: userID,
+        "cart.name": { $ne: itemObj.name }
     },
     {
         $push: {
