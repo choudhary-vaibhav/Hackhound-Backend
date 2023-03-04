@@ -31,6 +31,22 @@ async function getUserByID(userID){
     return false;
 }
 
+async function appendOrderID(userID, orderID){
+    const result = await User.updateOne({
+        _id: userID,
+    },
+    {
+        $push: {
+            orders: orderID,
+        }
+    });
+
+    if(result.modifiedCount>0){
+        return true;
+    }
+    return false;
+}
+
 async function getCart(userID){
     const data = await User.findOne({_id: userID}).lean();
 
@@ -126,4 +142,5 @@ module.exports = {
     removeItemFromCart,
     clearCart,
     updateItemCount,
+    appendOrderID,
 }

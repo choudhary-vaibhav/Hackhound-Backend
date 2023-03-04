@@ -6,12 +6,23 @@ async function createOrder(orderObj){
     await order.save();
 
     if(order._id){
-        return true;
+        return order._id;
     }
-    return false;
+    return null;
 }
 
-async function getOrder(orderID){
+async function getOrderAll(userID){
+    const data = await Order.find({
+        user_id: userID
+    });
+
+    if(data){
+        return data;
+    }
+    return null;
+}
+
+async function getOrderOne(orderID){
     const data = await Order.findOne({
         _id: orderID
     });
@@ -34,7 +45,8 @@ async function cancelOrder(orderID){
 }
 
 module.exports = {
-    getOrder,
+    getOrderAll,
     createOrder,
     cancelOrder,
+    getOrderOne
 }
