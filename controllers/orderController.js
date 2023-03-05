@@ -19,7 +19,7 @@ async function createOrder(req, res){
             const isAdded = await userServices.appendOrderID(orderObj.user_id, result);
 
             if(isAdded){
-                res.status(201).json({ order_id: result });
+                return res.status(201).json({ order_id: result });
             }else{
                 return res.status(400).json({message:'Created But Not Appended in User Collection Doc! '});
 
