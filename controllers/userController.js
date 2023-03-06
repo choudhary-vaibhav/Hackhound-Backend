@@ -6,7 +6,7 @@ const userServices = require('../services/userServices');
 async function registerUser(req, res){
     try{
         let userObject = req.body ? req.body : null;
-        console.log(userObject);
+        //console.log(userObject);
 
         if(userObject === null){
             return res.status(400).json({ message: "Parameter Error!" });
@@ -17,14 +17,14 @@ async function registerUser(req, res){
         //generating a salt
         bcrypt.genSalt(saltRounds, (err, salt)=>{
             if(err){
-                response.status(403).json({message:'Error in user registration! '});
+                return response.status(403).json({message:'Error in user registration! '});
             }else{
                 //generating the hash
                 bcrypt.hash(password, salt, (err, hash)=>{
                     if(err){
-                        response.status(403).json({message:'Error in user registration! '});
+                        return response.status(403).json({message:'Error in user registration! '});
                     }else{
-                        console.log(hash)
+                        //console.log(hash)
                         userObject.password = hash;
                         userServices.addUser(userObject, res);
 
